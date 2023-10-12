@@ -1,0 +1,53 @@
+<section class="container d-grid gap-4 my-4 p-4 border-dark border rounded">
+  <form [formGroup]="dForm" class="d-flex flex-column align-items-start">
+    <div class="d-flex gap-3 align-items-center mb-4">
+      <label class="h4 m-0">Дата:</label>
+      <input type="date"
+             min="{{today | date: 'yyyy-M-d'}}"
+             formControlName="meetDate"
+             class="border-1 rounded lh-lg px-2"
+             [class.border-danger]="this.dForm.invalid"
+      >
+      <span *ngIf="this.dForm.invalid" class="text-danger fw-bold text-uppercase">оберiть дату</span>
+    </div>
+
+    <label class="h4">Дiагнози за ICPC-2</label>
+
+    <div class="w-100" formArrayName="diagnosis">
+      <div class="d-flex gap-3 w-100 mb-2"
+           *ngFor="let control of formArray.controls; let i = index"
+           [formGroupName]="i"
+      >
+        <select *ngIf="diagnosisList"
+                formControlName="selectedDiagnosis"
+                class="form-select w-50">
+          <option *ngFor="let item of diagnosisList"
+                  [ngValue]="item"
+          >{{item.code}} {{item.name}}</option>
+        </select>
+
+        <input type="text"
+               formControlName="diagnosisComment"
+               placeholder="коментар"
+               class="w-50 border border-secondary rounded px-2">
+      </div>
+    </div>
+    <button type="submit"
+            class="btn text-primary border-0 mb-2"
+            (click)="addField()">+ додати ще
+    </button>
+    <button type="button"
+            class="btn btn-outline-primary w-100"
+            [disabled]="this.dForm.invalid"
+            (click)="generateJSON()">Сформувати JSON
+    </button>
+  </form>
+
+  <div class="d-flex flex-column">
+    <label class="h6">JSON:</label>
+    <app-json-view
+      [formData]="dFormData"
+      [onsetDate]="onsetDate"
+    ></app-json-view>
+  </div>
+</section>
