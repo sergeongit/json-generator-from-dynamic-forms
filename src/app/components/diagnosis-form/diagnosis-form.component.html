@@ -18,10 +18,10 @@
            *ngFor="let control of formArray.controls; let i = index"
            [formGroupName]="i"
       >
-        <select *ngIf="diagnosisList"
+        <select *ngIf="diagnosisListStream | async as list"
                 formControlName="selectedDiagnosis"
                 class="form-select w-50">
-          <option *ngFor="let item of diagnosisList"
+          <option *ngFor="let item of list"
                   [ngValue]="item"
           >{{item.code}} {{item.name}}</option>
         </select>

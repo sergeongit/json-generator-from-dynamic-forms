@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit,
-} from '@angular/core'
+import { Component } from '@angular/core'
 import { DiagnosisCatalogService } from '../../services/diagnosis-catalog.service'
 import { DiagnosisInterface } from '../../interfaces/diagnosis.interface'
 import {
@@ -10,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms'
-import { DiagnosisFormInterface } from '../../interfaces/from-diagnosis-form/diagnosis-form.interface'
+
 
 @Component({
   selector: 'app-diagnosis-form',
@@ -18,20 +15,22 @@ import { DiagnosisFormInterface } from '../../interfaces/from-diagnosis-form/dia
   styleUrls: ['./diagnosis-form.component.scss'],
 })
 
-export class DiagnosisFormComponent implements OnInit {
+export class DiagnosisFormComponent {
   today = new Date()
   inputDate: string = ''
   onsetDate: string = ''
   dFormData: any
 
-  diagnosisList: DiagnosisInterface[] | undefined
+  diagnosisListStream = this.diagnosisCatalog.catalogStream
   selectedItem: DiagnosisInterface | undefined
+
+  dateValidationPattern = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/
 
   dForm = this.fb.group({
     meetDate: [
       '',
       [Validators.required,
-        Validators.pattern(/^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/),
+        Validators.pattern(this.dateValidationPattern),
       ],
     ],
     diagnosis: this.fb.array([
@@ -43,14 +42,6 @@ export class DiagnosisFormComponent implements OnInit {
     private diagnosisCatalog: DiagnosisCatalogService,
     private fb: FormBuilder,
   ) {}
-
-  ngOnInit() {
-    this.getDiagnosisList()
-  }
-
-  getDiagnosisList() {
-    this.diagnosisCatalog.getCatalog().subscribe(list => this.diagnosisList = list)
-  }
 
   createFormDiagnosis(): FormGroup {
     return this.fb.group({
