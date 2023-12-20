@@ -14,7 +14,7 @@ import { DiagnosisInterface } from '../interfaces/diagnosis.interface'
 })
 
 export class DiagnosisCatalogService {
-  API_URL = 'https://global.lakmus.org/Dictionaries/icpc2?IsPublic=true'
+  API_URL = 'https://cors-hijacker.vercel.app/api?url=https%3A%2F%2Fglobal.lakmus.org%2FDictionaries%2Ficpc2%3FIsPublic%3Dtrue'
 
   constructor(
     private http: HttpClient,
